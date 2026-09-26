@@ -4,16 +4,30 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-project(log VERSION 1.0 DESCRIPTION "Small log library")
+project(liblog
+        VERSION 1.1
+        DESCRIPTION "A small log library"
+       )
 
 # Source list
-add_library(log SHARED src/log.cpp)
+add_library(liblog SHARED
+            src/log.cpp)
+
+set_property(
+        TARGET liblog PROPERTY
+        EXPORT_NAME log
+)
 
 # Public API
-set_target_properties(log PROPERTIES PUBLIC_HEADER include/log.h)
+set_target_properties(liblog PROPERTIES PUBLIC_HEADER include/liblog/log.h)
+set_target_properties(liblog PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(liblog PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
 # Include dir
-target_include_directories(log PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(liblog PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set_target_properties(log PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(log PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+# Include dir in installations
+install(TARGETS liblog
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+       )

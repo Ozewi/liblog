@@ -8,7 +8,7 @@
  * Please read the file LICENSE for further details.
  */
 
-#include "log.h"
+#include "liblog/log.h"
 #include <iostream>
 #include <iomanip>
 #include <mutex>
@@ -18,8 +18,8 @@
 namespace Log {
 
 /** ----------------------------------------------------
- * @brief     Variables local to the module
- * ------ */
+ * \brief   Variables local to the module
+ * -------- */
 
 static std::ostream* outLog_ = &std::cerr;              // Output stream. Default: std::cerr alias stderr.
 static Verbosity reportingLevel_ = Error;               // Reporting level. Default: Error.
@@ -32,7 +32,8 @@ static constexpr unsigned MUTEX_TIMEOUT_ = 5;           // Timeout for acquiring
 static const char* logNames[] = { "ERROR", "Warn", "Info", "Debug" };
 
 /** ----------------------------------------------------
- * @brief     Class nullstream: An output stream that writes to nowhere.
+ * \class   nullstream
+ * \brief   An output stream that writes to nowhere.
  * ------ */
 struct nullstream : std::ostream
 {
@@ -49,11 +50,12 @@ std::ostream& operator << (nullstream& os, T)
 };
 
 /** ----------------------------------------------------
- * @brief     Class MemDump: Dump memory buffers to log
- * ------ */
+ * \class   MemDump
+ * \brief   Dump memory buffers to log
+ * -------- */
 
 /**
- * @brief     Injection operator
+ * @brief   Injection operator
  */
 std::ostream& operator << (std::ostream& os, const MemDump& md)
 {
@@ -61,7 +63,7 @@ std::ostream& operator << (std::ostream& os, const MemDump& md)
 }
 
 /**
- * @brief     Dumping function
+ * \brief   Dumping function
  */
 std::ostream& MemDump::doDump(std::ostream& os) const
 {
@@ -76,11 +78,11 @@ std::ostream& MemDump::doDump(std::ostream& os) const
 }
 
 /** ----------------------------------------------------
- * @brief     Public functions of the module
- * ------ */
+ * \brief   Public functions of the module
+ * -------- */
 
 /**
- * @brief     Set the output log file.
+ * \brief   Set the output log file.
  */
 void ToFile(const std::string& file, OpenMode mode)
 {
@@ -94,7 +96,7 @@ void ToFile(const std::string& file, OpenMode mode)
 }
 
 /**
- * @brief     Set the minimum reporting level of a trace for being reported.
+ * \brief   Set the minimum reporting level of a trace for being reported.
  */
 void SetReportingLevel(Verbosity p_level)
 {
@@ -106,7 +108,7 @@ void SetReportingLevel(Verbosity p_level)
 }
 
 /**
- * @brief     Gets the current reporting level.
+ * \brief   Gets the current reporting level.
  */
 Verbosity GetReportingLevel()
 {
@@ -114,7 +116,7 @@ Verbosity GetReportingLevel()
 }
 
 /**
- * @brief     Get the name of a given reporting level.
+ * \brief   Get the name of a given reporting level.
  */
 const char* GetLevelName(Verbosity level)
 {
@@ -124,7 +126,7 @@ const char* GetLevelName(Verbosity level)
 }
 
 /**
- * @brief     Sets whether a timestamp should be added to each trace or not.
+ * \brief   Sets whether a timestamp should be added to each trace or not.
  */
 void ShowTimestamp(bool show)
 {
@@ -132,7 +134,7 @@ void ShowTimestamp(bool show)
 }
 
 /**
- * @brief     Sets the print format of the timestamp.
+ * \brief   Sets the print format of the timestamp.
  */
 void SetTimestampFormat(TimeFormat format)
 {
@@ -140,7 +142,7 @@ void SetTimestampFormat(TimeFormat format)
 }
 
 /**
- * @brief     Sets serialization mode.
+ * \brief   Sets serialization mode.
  */
 void SetSerialization(bool mode)
 {
@@ -150,7 +152,7 @@ void SetSerialization(bool mode)
 }
 
 /**
- * @brief     Get the output stream.
+ * \brief   Get the output stream.
  */
 std::ostream& GetStream(Verbosity p_level, const char* p_file, int p_line, const char* p_func)
 {
@@ -197,7 +199,7 @@ std::ostream& GetStream(Verbosity p_level, const char* p_file, int p_line, const
 }
 
 /**
- * @brief     Finish a trace.
+ * \brief   Finish a trace.
  */
 std::ostream& end(std::ostream& os)
 {
@@ -208,7 +210,7 @@ std::ostream& end(std::ostream& os)
 }
 
 /**
- * @brief     Finish a trace and exit the program.
+ * \brief   Finish a trace and exit the program.
  */
 [[noreturn]] std::ostream& terminate(std::ostream& os)
 {
